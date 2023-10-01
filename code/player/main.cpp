@@ -823,43 +823,49 @@ static void show_about_view() {
 	ImGui::Text("Erik de Castro Lopo");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("OpusFile");
 	ImGui::Text("Copyright (c) 1994-2013 Xiph.Org Foundation and contributors");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("FLAC - Free Lossless Audio Codec");
 	ImGui::Text("Copyright (C) 2000-2009  Josh Coalson");
 	ImGui::Text("Copyright (C) 2011-2023  Xiph.Org Foundation");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("OGG");
 	ImGui::Text("Copyright (c) 2002, Xiph.org Foundation");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("ImGui");
 	ImGui::Text("Copyright (c) 2014-2023 Omar Cornut");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("libsamplerate");
 	ImGui::Text("Copyright (c) 2012-2016, Erik de Castro Lopo <erikd@mega-nerd.com>");
 	ImGui::Text("All rights reserved.");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("xxHash Library");
 	ImGui::Text("Copyright (c) 2012-2021 Yann Collet");
 	ImGui::Text("All rights reserved.");
 	
 	ImGui::NewLine();
-	
 	ImGui::Text("FreeType");
 	ImGui::Text("Copyright 1996-2002, 2006 by");
 	ImGui::Text("David Turner, Robert Wilhelm, and Werner Lemberg");
+	
+	ImGui::NewLine();
+	ImGui::Text("zlib");
+	ImGui::Text("Copyright (C) 1995-2023 Jean-loup Gailly and Mark Adler");
+	
+	ImGui::NewLine();
+	ImGui::Text("bzip2");
+	ImGui::Text("Copyright (C) 1996-2010 Julian R Seward. All rights reserved.");
+	
+	ImGui::NewLine();
+	ImGui::Text("libpng");
+	ImGui::Text("Copyright (c) 1995-2023 The PNG Reference Library Authors.");
+	ImGui::Text("Copyright (c) 2018-2023 Cosmin Truta.");
 	
 	if (ImGui::Button("Ok") || (ImGui::IsWindowFocused() && ImGui::IsKeyPressed(ImGuiKey_Escape))) {
 		switch_main_view(VIEW_TRACK_LIST);
