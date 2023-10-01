@@ -1,0 +1,9 @@
+*.ilk
+*.pdb
+*.exe
+data/Bin/*
+.build
+imgui.ini
+data/Playlists
+data/library.dat
+code/external/*
