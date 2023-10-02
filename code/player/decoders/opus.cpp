@@ -18,7 +18,7 @@
 
 static OggOpusFile *g_opus;
 
-int open_opus(const wchar_t *path, PCM_Format *format) {
+int open_opus(const wchar_t *path, float buffer_duration_ms, PCM_Format *format) {
 	char path_u8[512];
 	utf16_to_utf8(path, path_u8, sizeof(path_u8));
 	

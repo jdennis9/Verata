@@ -19,7 +19,7 @@
 #include "common.h"
 
 // Return true on success. Needs to write the format to the given pointer
-typedef int Decoder_Open_Function(const wchar_t *path, PCM_Format *format);
+typedef int Decoder_Open_Function(const wchar_t *path, float buffer_duration_ms, PCM_Format *format);
 // Return false to close the stream
 typedef int Decoder_Decode_Function(u32 num_frames, float *buffer);
 // Get the current sample number
@@ -35,25 +35,25 @@ struct Decoder {
 	Decoder_Close_Function *close_func;
 };
 
-int open_opus(const wchar_t *path, PCM_Format *format);
+int open_opus(const wchar_t *path, float buffer_duration_ms, PCM_Format *format);
 int decode_opus(u32 num_frames, float *buffer);
 int seek_opus(u64 sample);
 u64 get_sample_opus();
 void close_opus();
 
-int open_mp3(const wchar_t *path, PCM_Format *format);
+int open_mp3(const wchar_t *path, float buffer_duration_ms, PCM_Format *format);
 int decode_mp3(u32 num_frames, float *buffer);
 int seek_mp3(u64 sample);
 u64 get_sample_mp3();
 void close_mp3();
 
-int open_flac(const wchar_t *path, PCM_Format *format);
+int open_flac(const wchar_t *path, float buffer_duration_ms, PCM_Format *format);
 int decode_flac(u32 num_frames, float *buffer);
 int seek_flac(u64 sample);
 u64 get_sample_flac();
 void close_flac();
 
-int open_wav(const wchar_t *path, PCM_Format *format);
+int open_wav(const wchar_t *path, float buffer_duration_ms, PCM_Format *format);
 int decode_wav(u32 num_frames, float *buffer);
 int seek_wav(u64 sample);
 u64 get_sample_wav();

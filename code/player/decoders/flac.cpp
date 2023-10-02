@@ -80,24 +80,25 @@ static void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__St
 	}
 }
 
-int open_flac(const wchar_t *path, PCM_Format *format) {
+int open_flac(const wchar_t *path, float buffer_duration_ms, PCM_Format *format) {
 	FLAC__StreamDecoderInitStatus status;
 	FILE *file = _wfopen(path, L"rb");
 	
 	g_flac.decoder = FLAC__stream_decoder_new();
 	g_flac.buffer = NULL;
 	g_flac.current_sample = 0;
-	g_flac.overflow_buffer = (float*)malloc(48000*sizeof(float));
-	g_flac.overflow_size = 48000;
 	g_flac.overflow_position = 0;
 	
 	FLAC__stream_decoder_set_md5_checking(g_flac.decoder, true);
 	status = FLAC__stream_decoder_init_FILE(g_flac.decoder, file, &write_callback, 
 											&metadata_callback, 
 											&error_callback, format);
-	assert(status == FLAC__STREAM_DECODER_INIT_STATUS_OK);
+	if (status != FLAC__STREAM_DECODER_INIT_STATUS_OK) return false;
 	
 	FLAC__stream_decoder_process_until_end_of_metadata(g_flac.decoder);
+	
+	g_flac.overflow_size = (buffer_duration_ms / 1000.f) * format->sample_rate;
+	g_flac.overflow_buffer = (float*)malloc(g_flac.overflow_size * sizeof(float) * 2);
 	
 	return true;
 }

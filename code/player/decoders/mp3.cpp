@@ -21,7 +21,7 @@
 
 static mp3dec_ex_t g_mp3;
 
-int open_mp3(const wchar_t *path, PCM_Format *format) {
+int open_mp3(const wchar_t *path, float buffer_duration_ms, PCM_Format *format) {
 	if (mp3dec_ex_open_w(&g_mp3, path, MP3D_SEEK_TO_SAMPLE)) {
 		log_error("Failed to open mp3 stream \"%ls\"\n", path);
 		return false;

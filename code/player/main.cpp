@@ -64,14 +64,7 @@ static struct {
 	u32 width, height;
 } g_window;
 
-
 static struct {
-	// Need to keep a cache of track IDs for the queue because
-	// they are frequently needed and hashing them every time they
-	// are needed is very slow.
-	/*Large_Auto_Array<u32> track_queue_ids;
-	Large_Auto_Array<Track_Info> track_queue;
-	Large_Auto_Array<Track_Info> search_results;*/
 	Track_Array queue;
 	Track_Array search_results;
 	Large_Auto_Array<Playlist> playlists;

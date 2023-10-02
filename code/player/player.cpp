@@ -48,6 +48,7 @@ static struct {
 	HANDLE audio_thread;
 	
 	PCM_Format format;
+	float buffer_duration;
 	
 	IMMDevice *device;
 	IMMDeviceEnumerator *device_enumerator;
@@ -202,8 +203,10 @@ DWORD audio_thread_entry(LPVOID user_data) {
 	g_stream.render_client->GetBuffer(num_buffer_frames, &output_buffer);
 	g_stream.render_client->ReleaseBuffer(num_buffer_frames, 0);
 	
-	const DWORD buffer_duration_ms = ((mix_format->nSamplesPerSec*1000) / num_buffer_frames) / 2;
+	const DWORD buffer_duration_ms = (mix_format->nSamplesPerSec*1000) / num_buffer_frames;
 	log_info("Buffer duration: %dms\n", buffer_duration_ms);
+	g_stream.buffer_duration = buffer_duration_ms;
+	
 	CoTaskMemFree(mix_format);
 	
 	g_stream.audio_client->Start();
@@ -213,7 +216,7 @@ DWORD audio_thread_entry(LPVOID user_data) {
 		u32 available_frames = 0;
 		
 		// If the sleep is interrupted, we need to reset the audio clock
-		if (WaitForSingleObject(g_stream.interrupt_semaphore, buffer_duration_ms) != WAIT_TIMEOUT) {
+		if (WaitForSingleObject(g_stream.interrupt_semaphore, buffer_duration_ms / 2) != WAIT_TIMEOUT) {
 			g_stream.audio_client->Stop();
 			g_stream.audio_client->Reset();
 			g_stream.audio_client->Start();
@@ -280,7 +283,7 @@ bool open_track(const wchar_t *path) {
 		return false;
 	}
 	
-	if (!g_decoder.open_func(path, &g_stream.format)) {
+	if (!g_decoder.open_func(path, g_stream.buffer_duration, &g_stream.format)) {
 		unlock_stream();
 		return false;
 	}

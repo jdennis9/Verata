@@ -50,7 +50,7 @@ static struct WAV_Stream {
 	u64 total_samples;
 } g_wav;
 
-int open_wav(const wchar_t *path, PCM_Format *format) {
+int open_wav(const wchar_t *path, float buffer_duration_ms, PCM_Format *format) {
 	WAV_Header header;
 	WAV_Fmt_Chunk fmt;
 	WAV_Chunk_Header chunk;
@@ -106,8 +106,8 @@ int open_wav(const wchar_t *path, PCM_Format *format) {
 	g_wav.sample_size = format->sample_size;
 	g_wav.current_sample = 0;
 	// 1 second of buffer.
-	g_wav.conversion_buffer_size = fmt.bytes_per_second;
-	g_wav.conversion_buffer = (s32*)malloc(g_wav.conversion_buffer_size);
+	g_wav.conversion_buffer_size = (buffer_duration_ms / 1000.f) * format->sample_rate;
+	g_wav.conversion_buffer = (s32*)malloc(g_wav.conversion_buffer_size * 4 * 2);
 	return true;
 }
 
