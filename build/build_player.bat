@@ -5,8 +5,7 @@ call .\set_vars.bat
 if not exist "..\.build" mkdir "..\.build"
 
 pushd ..\.build
-echo cl %INCLUDES% %OPTIONS% %1 ..\code\player\*.cpp %LINKER_OPTIONS%
-cl %INCLUDES% %OPTIONS% %1 /utf-8 d3d9.lib ^
+cl %INCLUDES% %OPTIONS% %* /utf-8 d3d9.lib ^
 ole32.lib winmm.lib comdlg32.lib user32.lib opusfile.lib ^
 ogg.lib opus.lib FLAC.lib msvcrt.lib freetype.lib ^
 samplerate.lib ^

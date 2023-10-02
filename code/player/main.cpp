@@ -22,6 +22,7 @@
 #include <d3d9.h> 
 #include <wchar.h>
 #include <time.h>
+#include <stdio.h>
 
 #include "common.h"
 #include "player.h"
@@ -163,16 +164,6 @@ static u32 queue_tracks(const Track_Array *tracks, u32 array_offset = 0, u32 arr
 	u32 *out_id;
 	G.queue_next_position = 0;
 	
-	/*for (u32 i = 0; i < count; ++i) {
-		u32 track_id = get_track_id(&tracks->elements[i+array_offset]);
-		if (get_track_index_in_queue(track_id) != -1) continue;
-		
-		out_id = G.queue.ids.push();
-		out = G.queue.info.push();
-		*out_id = track_id;
-		*out = tracks->elements[i+array_offset];
-	}*/
-	
 	for (u32 i = array_offset; i < (count+array_offset); ++i) {
 		if (get_track_index_in_queue(tracks->ids.elements[i]) != -1) continue;
 		G.queue.add(tracks->ids.elements[i], &tracks->info.elements[i]);
@@ -250,7 +241,8 @@ static void play_playlist(u32 index) {
 }
 
 static bool create_d3d_device(HWND hwnd) {
-	assert((g_d3d = Direct3DCreate9(D3D_SDK_VERSION)));
+	g_d3d = Direct3DCreate9(D3D_SDK_VERSION);
+	USER_ASSERT(g_d3d != NULL, "Failed to create D3D9 device");
 	
 	g_present_params.Windowed = TRUE;
 	g_present_params.SwapEffect = D3DSWAPEFFECT_DISCARD;
@@ -259,8 +251,10 @@ static bool create_d3d_device(HWND hwnd) {
 	g_present_params.AutoDepthStencilFormat = D3DFMT_D16;
 	g_present_params.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 	
-	assert(!g_d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd, 
-								D3DCREATE_HARDWARE_VERTEXPROCESSING, &g_present_params, &g_d3d_device));
+	HRESULT result = g_d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd, 
+										 D3DCREATE_HARDWARE_VERTEXPROCESSING, &g_present_params, &g_d3d_device);
+	
+	USER_ASSERT_FMT(result == 0, "Failed to initialize D3D9 device (%d)", result);
 	
 	return true;
 }
@@ -271,7 +265,12 @@ static void reset_d3d_device() {
 	ImGui_ImplDX9_CreateDeviceObjects();
 }
 
-int main(int argc, char *argv[]) {
+#ifdef RELEASE
+int WINAPI WinMain(HINSTANCE hinstance_arg, HINSTANCE previous_hinstance, LPSTR cmd_line, int show_cmd)
+#else
+int main(int argc, char *argv[])
+#endif
+{
 	srand(time(NULL));
 	log_debug("Debug logging is ON\n");
 	log_info("Info logging is ON\n");
@@ -1263,5 +1262,24 @@ float time_ticks_to_milliseconds(u64 ticks) {
 	QueryPerformanceFrequency(&frequency);
 	return ((double)ticks / (double)frequency.QuadPart) * 1000.f;
 }
-	
-	
+
+static void show_formatted_message_box(UINT type, const char *title, const char *message, va_list args) {
+	char formatted[4096];
+	vsnprintf(formatted, sizeof(formatted), message, args);
+	MessageBox(NULL, message, title, type);
+}
+
+void fatal_error(const char *message, ...) {
+	va_list args;
+	va_start(args, message);
+	show_formatted_message_box(MB_OK|MB_ICONERROR, "[Verata] Fatal Error", message, args);
+	va_end(args);
+	exit(1);
+}
+
+void user_warning(const char *message, ...) {
+	va_list args;
+	va_start(args, message);
+	show_formatted_message_box(MB_OK|MB_ICONWARNING, "[Verata] Warning", message, args);
+	va_end(args);
+}

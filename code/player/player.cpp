@@ -276,7 +276,7 @@ bool open_track(const wchar_t *path) {
 	
 	if (!get_decoder_functions(codec)) {
 		unlock_stream();
-		log_error("No decoder available for codec \"%s\"\n", get_codec_name(codec));
+		user_warning("No decoder available for codec \"%s\"\n", get_codec_name(codec));
 		return false;
 	}
 	
@@ -321,7 +321,7 @@ int toggle_playback() {
 }
 
 void set_playback_volume(float volume) {
-	assert(volume <= 1.f);
+	DEBUG_ASSERT(volume <= 1.f);
 	float volumes[2] = {volume, volume};
 	g_volume_controller->SetAllVolumes(2, volumes);
 }

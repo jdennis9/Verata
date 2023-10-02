@@ -45,6 +45,13 @@ typedef int8_t  s8;
 #define DEBUG_ASSERT(expression) expression
 #endif
 
+// Assertions for the user. If the assertion fails, show an error message and exit.
+#define USER_ASSERT_FMT(expression, message, ...) if (!(expression)) fatal_error(message, __VA_ARGS__)
+#define USER_ASSERT(expression, message) if (!(expression)) fatal_error(message);
+
+void fatal_error(const char *message, ...);
+void user_warning(const char *message, ...);
+
 enum {
 	LOG_LEVEL_ERROR,
 	LOG_LEVEL_WARNING,
@@ -59,7 +66,6 @@ enum Codec {
 	CODEC_WAV,
 	CODEC_FLAC,
 };
-
 
 enum PCM_Type {
 	PCM_TYPE_S24,
