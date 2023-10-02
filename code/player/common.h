@@ -142,6 +142,7 @@ struct Playlist {
 	// Update tracks after a library scan
 	void update_tracks();
 	u32 get_id();
+	bool has_track(u32 id);
 	void add_track(const Track_Info *track);
 	void remove(u32 index);
 	void remove_range(u32 start, u32 end);

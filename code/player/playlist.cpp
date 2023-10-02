@@ -42,10 +42,23 @@ void Playlist::update_tracks() {
 	this->save_to_file();
 }
 
+bool Playlist::has_track(u32 id) {
+	u32 *ids = this->track_ids.elements;
+	u32 count = this->track_ids.count;
+	
+	for (u32 i = 0; i < count; ++i) {
+		if (ids[i] == id) return true;
+	}
+	
+	return false;
+}
+
 void Playlist::add_track(const Track_Info *track) {
 	u32 id = get_track_id(track);
-	this->track_ids.push_value(id);
-	this->tracks.add_from_id(id);
+	if (!this->has_track(id)) {
+		this->track_ids.push_value(id);
+		this->tracks.add_from_id(id);
+	}
 }
 
 u32 Playlist::get_id() {
