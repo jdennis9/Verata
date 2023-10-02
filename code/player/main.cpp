@@ -767,8 +767,8 @@ static void show_setup_view() {
 	}
 
 	ImGui::Text("This path will be scanned for music. Scanning may take a few minutes for large libraries.");
-	ImGui::Text("You can rescan your library at any time by going to Library -> Rescan library.");
-	ImGui::Text("You can change your library library at any time by going to Library -> Change library path.");
+	ImGui::Text("You can rescan your library at any time by going to File -> Rescan library.");
+	ImGui::Text("You can change your library library at any time by going to File -> Change library path.");
 	
 	commit |= ImGui::Button("Scan library");
 	
