@@ -49,6 +49,7 @@ enum View_ID {
 	VIEW_CONFIGURATION,
 	VIEW_HOTKEYS,
 	VIEW_ABOUT,
+	VIEW_LIBRARY_SCAN,
 };
 
 enum Hotkey_ID {
@@ -782,11 +783,8 @@ static void show_setup_view() {
 		clear_queue();
 		wchar_t path_w[512];
 		swprintf(path_w, ARRAY_LENGTH(path_w), L"%hs\\", path);
-		if (update_library(path_w)) {
-			for (u32 i = 0; i < G.playlists.count; ++i) {
-				G.playlists.elements[i].update_tracks();
-			}
-			switch_main_view(VIEW_TRACK_LIST);
+		if (set_library_path(path_w)) {
+			switch_main_view(VIEW_LIBRARY_SCAN);
 		}
 	}
 }
@@ -871,6 +869,27 @@ static void show_about_view() {
 	}
 }
 
+static void show_library_scan_view() {
+	static bool scan_next_frame = false;
+	ImGui::Text("Scanning library... This may take a few minutes");
+	
+	if (scan_next_frame) {
+		if (!update_library(NULL)) {
+			user_warning("Library scan failed!");
+			return;
+		}
+		
+		for (u32 i = 0; i < G.playlists.count; ++i) {
+			G.playlists.elements[i].update_tracks();
+		}
+		
+		switch_main_view(VIEW_TRACK_LIST);
+	}
+	else {
+		scan_next_frame = true;
+	}
+}
+
 static void delete_and_free_playlist(u32 index) {
 	Playlist *playlist = &G.playlists.elements[index];
 	delete_playlist(playlist);
@@ -900,11 +919,7 @@ static void show_gui(u32 window_width, u32 window_height) {
 			}
 			if (ImGui::MenuItem("Rescan library")) {
 				clear_queue();
-				update_library(NULL);
-				// Update playlists to new library
-				for (u32 i = 0; i < G.playlists.count; ++i) {
-					G.playlists.elements[i].update_tracks();
-				}
+				switch_main_view(VIEW_LIBRARY_SCAN);
 			}
 			
 			if (ImGui::MenuItem("Change library path")) {
@@ -1114,6 +1129,9 @@ static void show_gui(u32 window_width, u32 window_height) {
 			break;
 			case VIEW_ABOUT:
 			show_about_view();
+			break;
+			case VIEW_LIBRARY_SCAN:
+			show_library_scan_view();
 			break;
 		}
 	}	

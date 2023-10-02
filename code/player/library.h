@@ -26,6 +26,8 @@ enum {
 
 bool is_library_configured();
 bool load_library();
+// Doesn't update the library. Returns true if the path is allowed.
+bool set_library_path(const wchar_t *new_path);
 // If the library doesn't exist, create it.
 // Pass in NULL to use the current path
 bool update_library(const wchar_t *source_path);

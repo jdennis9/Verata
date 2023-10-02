@@ -179,6 +179,12 @@ static u32 scan_folder(wchar_t *path_buffer, u32 path_buffer_max, u32 path_lengt
 	return ret;
 }
 
+bool set_library_path(const wchar_t *new_path) {
+	if (!path_exists_w(new_path) || (wcslen(new_path) >= ARRAY_LENGTH(g_library.base_path))) return false;
+	wcsncpy(g_library.base_path, new_path, ARRAY_LENGTH(g_library.base_path));
+	return true;
+}
+
 bool update_library(const wchar_t *source_path) {
 	g_library.string_pool.reset();
 	g_library.tracks.reset();
