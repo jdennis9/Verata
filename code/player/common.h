@@ -36,8 +36,8 @@ typedef int8_t  s8;
 
 #define VERATA_VERSION_MAJOR 0
 #define VERATA_VERSION_MINOR 0
-#define VERATA_VERSION_PATCH 1
-#define VERATA_VERSION_STRING "0.0.1"
+#define VERATA_VERSION_PATCH 2
+#define VERATA_VERSION_STRING "0.0.2"
 
 #ifndef NDEBUG
 #define DEBUG_ASSERT(expression) assert(expression)
