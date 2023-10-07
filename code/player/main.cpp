@@ -577,11 +577,11 @@ static u32 show_track_list(Track_Array *tracks) {
 		
 		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
 		ImGui::TableSetColumnIndex(0);
-		ImGui::Text("Status");
+		ImGui::TextUnformatted("Status");
 		ImGui::TableSetColumnIndex(1);
-		ImGui::Text("Artist");
+		ImGui::TextUnformatted("Artist");
 		ImGui::TableSetColumnIndex(2);
-		ImGui::Text("Title");
+		ImGui::TextUnformatted("Title");
 		
 		for (u32 i = 0; i < tracks->count; ++i) {
 			u32 track_id = tracks->ids.elements[i];
@@ -599,13 +599,13 @@ static u32 show_track_list(Track_Array *tracks) {
 			// Status
 			ImGui::TableSetColumnIndex(0);
 			if (G.current_track_id == track_id) {
-				ImGui::Text("Playing");
+				ImGui::TextUnformatted("Playing");
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, 0xcc007aff);
 			}
 			
 			// Artist
 			ImGui::TableSetColumnIndex(1);
-			ImGui::Text(get_library_string(tracks->info.elements[i].artist));
+			ImGui::TextUnformatted(get_library_string(tracks->info.elements[i].artist));
 			
 			// Title
 			ImGui::TableSetColumnIndex(2);
@@ -735,7 +735,7 @@ static void show_setup_view() {
 	bool commit = 0;
 	bool allow_cancel = is_library_configured();
 	
-	ImGui::Text("Choose library path:");
+	ImGui::TextUnformatted("Choose library path:");
 	commit |= ImGui::InputText("##library_path", path, sizeof(path), ImGuiInputTextFlags_EnterReturnsTrue);
 	
 	ImGui::SameLine();
@@ -759,9 +759,9 @@ static void show_setup_view() {
 		file_dialog->Release();
 	}
 
-	ImGui::Text("This path will be scanned for music. Scanning may take a few minutes for large libraries.");
-	ImGui::Text("You can rescan your library at any time by going to File -> Rescan library.");
-	ImGui::Text("You can change your library library at any time by going to File -> Change library path.");
+	ImGui::TextUnformatted("This path will be scanned for music. Scanning may take a few minutes for large libraries.");
+	ImGui::TextUnformatted("You can rescan your library at any time by going to File -> Rescan library.");
+	ImGui::TextUnformatted("You can change your library library at any time by going to File -> Change library path.");
 	
 	commit |= ImGui::Button("Scan library");
 	
@@ -783,13 +783,13 @@ static void show_setup_view() {
 }
 
 static void show_hotkeys_view() {
-	ImGui::Text("Ctrl+P: Add selection to playlist");
-	ImGui::Text("Ctrl+Q: Add selection to queue");
-	ImGui::Text("Ctrl+Shift+N: New playlist");
-	ImGui::Text("Ctrl+Shift+Q: Clear queue");
-	ImGui::Text("Ctrl+S: Shuffle");
-	ImGui::Text("Middle Mouse Click: Play track/playlist");
-	ImGui::Text("Enter: Play first selected track/playlist");
+	ImGui::TextUnformatted("Ctrl+P: Add selection to playlist");
+	ImGui::TextUnformatted("Ctrl+Q: Add selection to queue");
+	ImGui::TextUnformatted("Ctrl+Shift+N: New playlist");
+	ImGui::TextUnformatted("Ctrl+Shift+Q: Clear queue");
+	ImGui::TextUnformatted("Ctrl+S: Shuffle");
+	ImGui::TextUnformatted("Middle Mouse Click: Play track/playlist");
+	ImGui::TextUnformatted("Enter: Play first selected track/playlist");
 	if (ImGui::Button("Ok") || (ImGui::IsWindowFocused() && ImGui::IsKeyPressed(ImGuiKey_Escape))) {
 		switch_main_view(VIEW_TRACK_LIST);
 	}
@@ -801,61 +801,61 @@ static void show_about_view() {
 	ImGui::Text("Build date: %s", __DATE__);
 	
 	ImGui::SeparatorText("License");
-	ImGui::Text("Apache-2.0");
-	ImGui::Text("Copyright 2023 Jamie Dennis");
+	ImGui::TextUnformatted("Apache-2.0");
+	ImGui::TextUnformatted("Copyright 2023 Jamie Dennis");
 	
 	ImGui::SeparatorText("Third-party Licenses");
 	
-	ImGui::Text("Opus");
-	ImGui::Text("Copyright 2001-2011 Xiph.Org, Skype Limited, Octasic,");
-	ImGui::Text("Jean-Marc Valin, Timothy B. Terriberry,");
-	ImGui::Text("CSIRO, Gregory Maxwell, Mark Borgerding,");
-	ImGui::Text("Erik de Castro Lopo");
+	ImGui::TextUnformatted("Opus");
+	ImGui::TextUnformatted("Copyright 2001-2011 Xiph.Org, Skype Limited, Octasic,");
+	ImGui::TextUnformatted("Jean-Marc Valin, Timothy B. Terriberry,");
+	ImGui::TextUnformatted("CSIRO, Gregory Maxwell, Mark Borgerding,");
+	ImGui::TextUnformatted("Erik de Castro Lopo");
 	
 	ImGui::NewLine();
-	ImGui::Text("OpusFile");
-	ImGui::Text("Copyright (c) 1994-2013 Xiph.Org Foundation and contributors");
+	ImGui::TextUnformatted("OpusFile");
+	ImGui::TextUnformatted("Copyright (c) 1994-2013 Xiph.Org Foundation and contributors");
 	
 	ImGui::NewLine();
-	ImGui::Text("FLAC - Free Lossless Audio Codec");
-	ImGui::Text("Copyright (C) 2000-2009  Josh Coalson");
-	ImGui::Text("Copyright (C) 2011-2023  Xiph.Org Foundation");
+	ImGui::TextUnformatted("FLAC - Free Lossless Audio Codec");
+	ImGui::TextUnformatted("Copyright (C) 2000-2009  Josh Coalson");
+	ImGui::TextUnformatted("Copyright (C) 2011-2023  Xiph.Org Foundation");
 	
 	ImGui::NewLine();
-	ImGui::Text("OGG");
-	ImGui::Text("Copyright (c) 2002, Xiph.org Foundation");
+	ImGui::TextUnformatted("OGG");
+	ImGui::TextUnformatted("Copyright (c) 2002, Xiph.org Foundation");
 	
 	ImGui::NewLine();
-	ImGui::Text("ImGui");
-	ImGui::Text("Copyright (c) 2014-2023 Omar Cornut");
+	ImGui::TextUnformatted("ImGui");
+	ImGui::TextUnformatted("Copyright (c) 2014-2023 Omar Cornut");
 	
 	ImGui::NewLine();
-	ImGui::Text("libsamplerate");
-	ImGui::Text("Copyright (c) 2012-2016, Erik de Castro Lopo <erikd@mega-nerd.com>");
-	ImGui::Text("All rights reserved.");
+	ImGui::TextUnformatted("libsamplerate");
+	ImGui::TextUnformatted("Copyright (c) 2012-2016, Erik de Castro Lopo <erikd@mega-nerd.com>");
+	ImGui::TextUnformatted("All rights reserved.");
 	
 	ImGui::NewLine();
-	ImGui::Text("xxHash Library");
-	ImGui::Text("Copyright (c) 2012-2021 Yann Collet");
-	ImGui::Text("All rights reserved.");
+	ImGui::TextUnformatted("xxHash Library");
+	ImGui::TextUnformatted("Copyright (c) 2012-2021 Yann Collet");
+	ImGui::TextUnformatted("All rights reserved.");
 	
 	ImGui::NewLine();
-	ImGui::Text("FreeType");
-	ImGui::Text("Copyright 1996-2002, 2006 by");
-	ImGui::Text("David Turner, Robert Wilhelm, and Werner Lemberg");
+	ImGui::TextUnformatted("FreeType");
+	ImGui::TextUnformatted("Copyright 1996-2002, 2006 by");
+	ImGui::TextUnformatted("David Turner, Robert Wilhelm, and Werner Lemberg");
 	
 	ImGui::NewLine();
-	ImGui::Text("zlib");
-	ImGui::Text("Copyright (C) 1995-2023 Jean-loup Gailly and Mark Adler");
+	ImGui::TextUnformatted("zlib");
+	ImGui::TextUnformatted("Copyright (C) 1995-2023 Jean-loup Gailly and Mark Adler");
 	
 	ImGui::NewLine();
-	ImGui::Text("bzip2");
-	ImGui::Text("Copyright (C) 1996-2010 Julian R Seward. All rights reserved.");
+	ImGui::TextUnformatted("bzip2");
+	ImGui::TextUnformatted("Copyright (C) 1996-2010 Julian R Seward. All rights reserved.");
 	
 	ImGui::NewLine();
-	ImGui::Text("libpng");
-	ImGui::Text("Copyright (c) 1995-2023 The PNG Reference Library Authors.");
-	ImGui::Text("Copyright (c) 2018-2023 Cosmin Truta.");
+	ImGui::TextUnformatted("libpng");
+	ImGui::TextUnformatted("Copyright (c) 1995-2023 The PNG Reference Library Authors.");
+	ImGui::TextUnformatted("Copyright (c) 2018-2023 Cosmin Truta.");
 	
 	if (ImGui::Button("Ok") || (ImGui::IsWindowFocused() && ImGui::IsKeyPressed(ImGuiKey_Escape))) {
 		switch_main_view(VIEW_TRACK_LIST);
@@ -864,7 +864,7 @@ static void show_about_view() {
 
 static void show_library_scan_view() {
 	static bool scan_next_frame = false;
-	ImGui::Text("Scanning library... This may take a few minutes");
+	ImGui::TextUnformatted("Scanning library... This may take a few minutes");
 	
 	if (scan_next_frame) {
 		if (!update_library(NULL)) {
