@@ -885,6 +885,11 @@ static void show_library_scan_view() {
 
 static void delete_and_free_playlist(u32 index) {
 	Playlist *playlist = &G.playlists.elements[index];
+	
+	if (index == G.selected_playlist_index) {
+		G.selected_playlist_index = 0;
+	}
+	
 	delete_playlist(playlist);
 	playlist->free();
 	G.playlists.remove(index);

@@ -59,6 +59,9 @@ void Playlist::add_track(const Track_Info *track) {
 		this->track_ids.push_value(id);
 		this->tracks.add_from_id(id);
 	}
+	else {
+		log_debug("Tried adding track 0x%u that is already in playlist\n", id);
+	}
 }
 
 u32 Playlist::get_id() {
