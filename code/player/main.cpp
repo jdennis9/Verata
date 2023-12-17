@@ -652,7 +652,7 @@ static u32 show_track_list(Track_Array *tracks) {
 				}
 				
 				if ((G.viewing_track_list != TRACK_LIST_PLAYLIST) && ImGui::MenuItem("Add to playlist")) {
-					Playlist *playlist = get_selected_playlist();
+					//Playlist *playlist = get_selected_playlist();
 					add_selection_to_playlist();
 				}
 				
@@ -970,6 +970,22 @@ static void show_gui(u32 window_width, u32 window_height) {
 	ImGui::SetNextWindowPos(ImVec2(layout_x, layout_y));
 	ImGui::SetNextWindowSize(ImVec2(layout_width, 65));
 	if (ImGui::Begin("##control_panel", NULL, window_flags)) {
+		if (ImGui::BeginPopupContextWindow()) {
+			// Add the playing track to the playlist
+			if (ImGui::Selectable("Add to playlist")) {
+				Playlist *playlist = get_selected_playlist();
+				const Track_Info *track_info = lookup_track(G.current_track_id);
+				
+				if (playlist && track_info) {
+					playlist->add_track(track_info);
+					playlist->save_to_file();
+				}
+			}
+			
+			ImGui::EndPopup();
+		}
+		
+		
 		// @TODO: Remember volume
 		static float volume_slider = 1.f;
 		ImVec2 button_size = ImVec2(12.f, 14.f);
